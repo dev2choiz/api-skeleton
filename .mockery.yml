@@ -1,0 +1,28 @@
+all: false
+#dir: "{{.InterfaceDir}}/mock{{.SrcPackageName}}"
+dir: "mocks/mock{{.SrcPackageName}}"
+filename: "mock_{{.InterfaceName | lower}}.go"
+force-file-write: true
+formatter: goimports
+generate: true
+include-auto-generated: false
+log-level: info
+structname: "{{.Mock}}{{.InterfaceName}}"
+pkgname: "mock{{.SrcPackageName}}"
+recursive: false
+require-template-schema-exists: true
+template: testify
+template-schema: "{{.Template}}.schema.json"
+packages:
+  github.com/dev2choiz/api-skeleton/pkg/repository:
+    config:
+    interfaces:
+      Repository:
+  github.com/dev2choiz/api-skeleton/pkg/cache:
+    config:
+    interfaces:
+      Cache:
+  github.com/dev2choiz/api-skeleton/pkg/business:
+    config:
+    interfaces:
+      Business:

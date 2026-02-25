@@ -1,0 +1,18 @@
+version: "2"
+formatters:
+  enable:
+    - gofumpt
+    - goimports
+linters:
+  default: standard
+  enable:
+    - misspell
+    # - perfsprint
+  settings:
+    staticcheck:
+      checks:
+        - all
+        - "-ST1000"
+  exclusions:
+    paths:
+      - mocks

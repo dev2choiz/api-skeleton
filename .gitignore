@@ -1,0 +1,6 @@
+# .env
+# requests
+logs
+.idea
+.vscode
+.nvim

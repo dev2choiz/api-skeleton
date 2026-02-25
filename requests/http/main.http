@@ -1,0 +1,61 @@
+### 
+
+@JWT_TOKEN = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE4NTc4MTE0NzEsImlkIjoiMzhkZmFjNTUtOGZmNi00YzlkLTg5MTYtOTAxNjA1MmY1MGNkIiwibmJmIjoxNzcxNDExNDcxfQ.ieR8Qn6moxCJ6B4aRocoK0jwXNnHer6T4bV2jf4QuPM
+@base_url = localhost:8080
+
+
+### 
+
+# @name index
+
+GET {{base_url}}/ HTTP/1.1
+Accept: application/json
+Content-Type: application/json
+
+
+### 
+
+# @name GetUsers
+
+GET {{base_url}}/users HTTP/1.1
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer {{JWT_TOKEN}}
+
+
+### 
+
+# @name GetUsers With filters
+
+GET {{base_url}}/users?username=geralt HTTP/1.1
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer {{JWT_TOKEN}}
+
+
+### 
+
+# @name Register
+
+POST {{base_url}}/register HTTP/1.1
+Accept: application/json
+Content-Type: application/json
+
+{
+  "password": "secret",
+  "username": "ciri"
+}
+
+
+### 
+
+# @name Authenticate
+
+POST {{base_url}}/authenticate HTTP/1.1
+Accept: application/json
+Content-Type: application/json
+
+{
+  "password": "secret",
+  "username": "geralt"
+}
