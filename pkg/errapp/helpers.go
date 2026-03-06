@@ -3,8 +3,9 @@ package errapp
 import (
 	"context"
 
-	"github.com/dev2choiz/api-skeleton/pkg/logger"
 	"go.uber.org/zap"
+
+	"github.com/dev2choiz/api-skeleton/pkg/logger"
 )
 
 func Check(ctx context.Context, err error) {

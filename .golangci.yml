@@ -3,6 +3,18 @@ formatters:
   enable:
     - gofumpt
     - goimports
+    - gci
+  settings:
+    goimports:
+      local-prefixes:
+        - github.com/dev2choiz/api-skeleton
+    gci:
+      sections:
+        - standard
+        - default
+        - blank
+        - dot
+        - prefix(github.com/dev2choiz/api-skeleton)
 linters:
   default: standard
   enable:
@@ -16,3 +28,7 @@ linters:
   exclusions:
     paths:
       - mocks
+    rules:
+      - linters:
+          - errcheck
+        source: "^\\s*defer\\s+"

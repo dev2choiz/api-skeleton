@@ -6,11 +6,12 @@ import (
 	"errors"
 	"fmt"
 
-	"github.com/dev2choiz/api-skeleton/pkg/env"
-	"github.com/dev2choiz/api-skeleton/pkg/errapp"
 	"github.com/uptrace/bun"
 	"github.com/uptrace/bun/dialect/pgdialect"
 	"github.com/uptrace/bun/driver/pgdriver"
+
+	"github.com/dev2choiz/api-skeleton/pkg/env"
+	"github.com/dev2choiz/api-skeleton/pkg/errapp"
 )
 
 func New(host, user, password, database string, port int, tls *tls.Config) (*bun.DB, error) {

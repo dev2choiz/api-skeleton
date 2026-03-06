@@ -2,15 +2,15 @@ package middleware
 
 import (
 	"context"
-	"fmt"
 	"net/http"
 	"time"
+
+	"github.com/google/uuid"
+	"go.uber.org/zap"
 
 	"github.com/dev2choiz/api-skeleton/pkg/business"
 	"github.com/dev2choiz/api-skeleton/pkg/contextapp"
 	"github.com/dev2choiz/api-skeleton/pkg/logger"
-	"github.com/google/uuid"
-	"go.uber.org/zap"
 )
 
 type responseWriter struct {
@@ -62,7 +62,6 @@ func AuthenticateMiddleware(bu business.Business) func(http.Handler) http.Handle
 				return
 			}
 
-			fmt.Println(err, "------------", user.ID)
 			r = r.WithContext(context.WithValue(r.Context(), contextapp.ContextKeyUser, user))
 
 			next.ServeHTTP(w, r)

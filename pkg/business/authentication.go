@@ -8,13 +8,14 @@ import (
 	"strings"
 	"time"
 
+	"github.com/golang-jwt/jwt/v5"
+	"go.uber.org/zap"
+	"golang.org/x/crypto/bcrypt"
+
 	"github.com/dev2choiz/api-skeleton/entity"
 	"github.com/dev2choiz/api-skeleton/pkg/cache"
 	"github.com/dev2choiz/api-skeleton/pkg/errapp"
 	"github.com/dev2choiz/api-skeleton/pkg/logger"
-	"github.com/golang-jwt/jwt/v5"
-	"go.uber.org/zap"
-	"golang.org/x/crypto/bcrypt"
 )
 
 var (

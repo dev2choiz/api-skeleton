@@ -4,10 +4,11 @@ import (
 	"os"
 	"testing"
 
+	"github.com/uptrace/bun"
+
 	"github.com/dev2choiz/api-skeleton/internal/testdb"
 	"github.com/dev2choiz/api-skeleton/pkg/db"
 	"github.com/dev2choiz/api-skeleton/pkg/fixtures"
-	"github.com/uptrace/bun"
 )
 
 var dbTest *bun.DB

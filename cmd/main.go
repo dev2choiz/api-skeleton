@@ -4,14 +4,14 @@ import (
 	"context"
 	"os"
 
+	"github.com/urfave/cli/v2"
+	"go.uber.org/zap"
+
 	"github.com/dev2choiz/api-skeleton/cmd/database"
 	"github.com/dev2choiz/api-skeleton/internal/config"
 	"github.com/dev2choiz/api-skeleton/pkg/db"
 	"github.com/dev2choiz/api-skeleton/pkg/env"
 	"github.com/dev2choiz/api-skeleton/pkg/logger"
-	"go.uber.org/zap"
-
-	"github.com/urfave/cli/v2"
 )
 
 func main() {

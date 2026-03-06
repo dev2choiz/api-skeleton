@@ -4,10 +4,11 @@ import (
 	"context"
 	"testing"
 
+	"github.com/stretchr/testify/assert"
+
 	"github.com/dev2choiz/api-skeleton/entity"
 	"github.com/dev2choiz/api-skeleton/pkg/errapp"
 	"github.com/dev2choiz/api-skeleton/pkg/fixtures"
-	"github.com/stretchr/testify/assert"
 )
 
 func Test_repository_GetUser(t *testing.T) {

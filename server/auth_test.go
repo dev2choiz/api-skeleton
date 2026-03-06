@@ -8,12 +8,13 @@ import (
 	"strings"
 	"testing"
 
+	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/mock"
+
 	"github.com/dev2choiz/api-skeleton/entity"
 	"github.com/dev2choiz/api-skeleton/mocks/mockbusiness"
 	"github.com/dev2choiz/api-skeleton/pkg/business"
 	"github.com/dev2choiz/api-skeleton/pkg/errapp"
-	"github.com/stretchr/testify/assert"
-	"github.com/stretchr/testify/mock"
 )
 
 func TestServer_Register(t *testing.T) {

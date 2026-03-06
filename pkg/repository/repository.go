@@ -4,10 +4,11 @@ import (
 	"context"
 	"errors"
 
+	"github.com/uptrace/bun"
+
 	"github.com/dev2choiz/api-skeleton/entity"
 	"github.com/dev2choiz/api-skeleton/pkg/db"
 	"github.com/dev2choiz/api-skeleton/pkg/errapp"
-	"github.com/uptrace/bun"
 )
 
 type Repository interface {

@@ -3,9 +3,10 @@ package repository
 import (
 	"context"
 
+	"github.com/uptrace/bun"
+
 	"github.com/dev2choiz/api-skeleton/entity"
 	"github.com/dev2choiz/api-skeleton/pkg/db"
-	"github.com/uptrace/bun"
 )
 
 func applyUserFilters(q *bun.SelectQuery, filters entity.UserFilters) {

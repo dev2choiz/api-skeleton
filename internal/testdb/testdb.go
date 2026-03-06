@@ -5,9 +5,10 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/dev2choiz/api-skeleton/cmd/database/migrations"
 	"github.com/uptrace/bun"
 	"github.com/uptrace/bun/migrate"
+
+	"github.com/dev2choiz/api-skeleton/cmd/database/migrations"
 )
 
 // EnsureTestDatabase prevents accidental execution on production database.

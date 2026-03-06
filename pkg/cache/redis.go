@@ -6,8 +6,9 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/dev2choiz/api-skeleton/internal/config"
 	"github.com/redis/go-redis/v9"
+
+	"github.com/dev2choiz/api-skeleton/internal/config"
 )
 
 type Cache interface {

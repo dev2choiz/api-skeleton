@@ -5,10 +5,11 @@ import (
 	"os"
 	"sync"
 
-	"github.com/dev2choiz/api-skeleton/pkg/contextapp"
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
 	"gopkg.in/natefinch/lumberjack.v2"
+
+	"github.com/dev2choiz/api-skeleton/pkg/contextapp"
 )
 
 var (

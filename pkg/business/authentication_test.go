@@ -8,14 +8,15 @@ import (
 	"testing"
 	"time"
 
-	"github.com/dev2choiz/api-skeleton/entity"
-	"github.com/dev2choiz/api-skeleton/mocks/mockcache"
-	"github.com/dev2choiz/api-skeleton/mocks/mockrepository"
-	"github.com/dev2choiz/api-skeleton/pkg/errapp"
 	"github.com/golang-jwt/jwt/v5"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/mock"
 	"golang.org/x/crypto/bcrypt"
+
+	"github.com/dev2choiz/api-skeleton/entity"
+	"github.com/dev2choiz/api-skeleton/mocks/mockcache"
+	"github.com/dev2choiz/api-skeleton/mocks/mockrepository"
+	"github.com/dev2choiz/api-skeleton/pkg/errapp"
 )
 
 func TestBusiness_Register(t *testing.T) {

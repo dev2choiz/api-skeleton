@@ -5,9 +5,10 @@ import (
 	"errors"
 	"net/http"
 
+	"github.com/go-chi/chi/v5"
+
 	"github.com/dev2choiz/api-skeleton/pkg/business"
 	"github.com/dev2choiz/api-skeleton/pkg/errapp"
-	"github.com/go-chi/chi/v5"
 )
 
 type Server struct {

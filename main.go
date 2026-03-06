@@ -5,6 +5,9 @@ import (
 	"fmt"
 	"net/http"
 
+	"github.com/go-chi/chi/v5"
+	"go.uber.org/zap"
+
 	"github.com/dev2choiz/api-skeleton/internal/config"
 	"github.com/dev2choiz/api-skeleton/middleware"
 	"github.com/dev2choiz/api-skeleton/pkg/business"
@@ -15,8 +18,6 @@ import (
 	"github.com/dev2choiz/api-skeleton/pkg/logger"
 	"github.com/dev2choiz/api-skeleton/pkg/repository"
 	"github.com/dev2choiz/api-skeleton/server"
-	"github.com/go-chi/chi/v5"
-	"go.uber.org/zap"
 )
 
 func main() {
