@@ -62,7 +62,7 @@ func TestServer_GetUsers(t *testing.T) {
 			http.StatusInternalServerError,
 		},
 		{
-			"business return an error",
+			"business return a list of users",
 			[]entity.User{{ID: "id", Username: "geralt"}},
 			nil,
 			http.StatusOK,

@@ -19,7 +19,7 @@ func main() {
 	appEnv := env.GetString("APP_ENV", "production")
 	logLevel := env.GetString("LOG_LEVEL", "info")
 
-	logger.InitLogger("logs/api.log", logger.GetZapLogLevel(logLevel), appEnv == "development")
+	logger.InitLogger("logs/cmd.log", logger.GetZapLogLevel(logLevel), appEnv == "development")
 	logger := logger.Get(ctx)
 	defer logger.Sync()
 

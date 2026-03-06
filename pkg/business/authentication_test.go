@@ -181,9 +181,7 @@ func TestBusiness_ValidateToken(t *testing.T) {
 		"exp":      time.Now().Add(time.Hour).Unix(),
 	})
 	tokenString, err := token.SignedString([]byte(jwtSecret))
-	if err != nil {
-		t.Fatalf("failed to sign token: %v", err)
-	}
+	assert.NoError(t, err)
 
 	req := httptest.NewRequest(http.MethodGet, "/", nil)
 	req.Header.Set("Authorization", "Bearer "+tokenString)
@@ -197,10 +195,8 @@ func TestBusiness_ValidateToken(t *testing.T) {
 	b := NewBusiness(st, ca, jwtSecret)
 
 	got, err := b.ValidateToken(req)
-	if err != nil {
-		t.Fatalf("ValidateToken() failed: %v", err)
-	}
-	if got.ID != testUser.ID || got.Username != testUser.Username {
-		t.Errorf("ValidateToken() = %v, want %v", got, testUser)
-	}
+	assert.NoError(t, err)
+
+	assert.Equal(t, got.ID, testUser.ID)
+	assert.Equal(t, got.Username, testUser.Username)
 }

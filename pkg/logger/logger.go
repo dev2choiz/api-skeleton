@@ -54,7 +54,7 @@ func InitLogger(logFile string, level zapcore.Level, isDev bool) {
 
 func Get(ctx context.Context) *zap.Logger {
 	if baseLogger == nil {
-		panic("logger not initialized")
+		return zap.NewNop()
 	}
 
 	l := baseLogger
