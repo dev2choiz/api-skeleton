@@ -33,3 +33,6 @@ kill-delve:
 
 logs-api:
 	docker compose logs -f api
+
+tests:
+	go test ./...
