@@ -11,17 +11,19 @@ import (
 
 func applyUserFilters(q *bun.SelectQuery, filters entity.UserFilters) {
 	if filters.ID != nil {
-		q.Where("id = ?", filters.ID)
+		q.Where("id = ?", *filters.ID)
 	}
-
 	if filters.Username != nil {
-		q.Where("username = ?", filters.Username)
+		q.Where("username = ?", *filters.Username)
 	}
 	if filters.Firstname != nil {
-		q.Where("firstname = ?", filters.Firstname)
+		q.Where("firstname = ?", *filters.Firstname)
 	}
 	if filters.Lastname != nil {
-		q.Where("lastname = ?", filters.Lastname)
+		q.Where("lastname = ?", *filters.Lastname)
+	}
+	if filters.Limit != nil {
+		q.Limit(*filters.Limit)
 	}
 }
 

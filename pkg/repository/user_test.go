@@ -56,6 +56,7 @@ func Test_repository_GetUsers(t *testing.T) {
 		name    string
 		filters entity.UserFilters
 		want    []entity.User
+		wantLen *int
 	}{
 		{
 			name: "filter by no existing ID",
@@ -97,16 +98,28 @@ func Test_repository_GetUsers(t *testing.T) {
 			filters: entity.UserFilters{},
 			want:    fixtures.Users,
 		},
+		{
+			name: "no filter but with limit",
+			filters: entity.UserFilters{
+				Limit: new(2),
+			},
+			wantLen: new(2),
+		},
 	}
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			got, gotErr := s.GetUsers(context.Background(), tt.filters)
 			assert.NoError(t, gotErr)
-			assert.Len(t, got, len(tt.want))
 
-			for i := range got {
-				assert.Equal(t, got[i].Username, tt.want[i].Username)
+			if tt.want != nil {
+				assert.Len(t, got, len(tt.want))
+
+				for i := range got {
+					assert.Equal(t, got[i].Username, tt.want[i].Username)
+				}
+			} else {
+				assert.Len(t, got, *tt.wantLen)
 			}
 		})
 	}

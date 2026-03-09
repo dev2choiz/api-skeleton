@@ -17,4 +17,5 @@ type UserFilters struct {
 	Username  *string `json:"username"`
 	Firstname *string `json:"firstname"`
 	Lastname  *string `json:"lastname"`
+	Limit     *int    `json:"limit"`
 }

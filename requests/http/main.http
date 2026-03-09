@@ -27,7 +27,7 @@ Authorization: Bearer {{JWT_TOKEN}}
 
 # @name GetUsers With filters
 
-GET {{base_url}}/users?username=geralt HTTP/1.1
+GET {{base_url}}/users?username=geralt&limit=5 HTTP/1.1
 Accept: application/json
 Content-Type: application/json
 Authorization: Bearer {{JWT_TOKEN}}

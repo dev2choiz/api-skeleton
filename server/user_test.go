@@ -28,12 +28,13 @@ func Test_getUserFilters(t *testing.T) {
 		},
 		{
 			"with all filter fields",
-			"id=id&username=username&firstname=firstname&lastname=lastname",
+			"id=id&username=username&firstname=firstname&lastname=lastname&limit=2",
 			entity.UserFilters{
 				ID:        new("id"),
 				Username:  new("username"),
 				Firstname: new("firstname"),
 				Lastname:  new("lastname"),
+				Limit:     new(2),
 			},
 		},
 	}

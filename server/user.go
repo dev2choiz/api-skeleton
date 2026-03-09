@@ -7,27 +7,13 @@ import (
 )
 
 func getUserFilters(r *http.Request) entity.UserFilters {
-	filter := entity.UserFilters{}
-
-	id := r.URL.Query().Get("id")
-	username := r.URL.Query().Get("username")
-	firstname := r.URL.Query().Get("firstname")
-	lastname := r.URL.Query().Get("lastname")
-
-	if id != "" {
-		filter.ID = &id
+	return entity.UserFilters{
+		ID:        getQueryString(r, "id"),
+		Username:  getQueryString(r, "username"),
+		Firstname: getQueryString(r, "firstname"),
+		Lastname:  getQueryString(r, "lastname"),
+		Limit:     getQueryInt(r, "limit"),
 	}
-	if username != "" {
-		filter.Username = &username
-	}
-	if firstname != "" {
-		filter.Firstname = &firstname
-	}
-	if lastname != "" {
-		filter.Lastname = &lastname
-	}
-
-	return filter
 }
 
 func (s Server) GetUsers(w http.ResponseWriter, r *http.Request) {
