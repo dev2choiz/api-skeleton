@@ -4,6 +4,7 @@ import (
 	"net/http"
 
 	"github.com/dev2choiz/api-skeleton/entity"
+	"github.com/dev2choiz/api-skeleton/pkg/httpx"
 )
 
 func getUserFilters(r *http.Request) entity.UserFilters {
@@ -19,9 +20,9 @@ func getUserFilters(r *http.Request) entity.UserFilters {
 func (s Server) GetUsers(w http.ResponseWriter, r *http.Request) {
 	users, err := s.business.GetUsers(r.Context(), getUserFilters(r))
 	if err != nil {
-		responseErr(w, err, nil)
+		httpx.ResponseErr(w, err, nil)
 		return
 	}
 
-	responseJSON(w, users, http.StatusOK)
+	httpx.ResponseJSON(w, users, http.StatusOK)
 }

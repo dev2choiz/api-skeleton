@@ -3,6 +3,8 @@ package server
 import (
 	"encoding/json"
 	"net/http"
+
+	"github.com/dev2choiz/api-skeleton/pkg/httpx"
 )
 
 type registerPayload struct {
@@ -15,17 +17,17 @@ func (s Server) Register(w http.ResponseWriter, r *http.Request) {
 
 	err := json.NewDecoder(r.Body).Decode(&pay)
 	if err != nil {
-		responseJSON(w, nil, http.StatusBadRequest)
+		httpx.ResponseJSON(w, nil, http.StatusBadRequest)
 		return
 	}
 
 	user, err := s.business.Register(r.Context(), pay.Username, pay.Password)
 	if err != nil {
-		responseErr(w, err, nil)
+		httpx.ResponseErr(w, err, nil)
 		return
 	}
 
-	responseJSON(w, user, http.StatusOK)
+	httpx.ResponseJSON(w, user, http.StatusOK)
 }
 
 type authPayload struct {
@@ -42,15 +44,15 @@ func (s Server) Authenticate(w http.ResponseWriter, r *http.Request) {
 
 	err := json.NewDecoder(r.Body).Decode(&pay)
 	if err != nil {
-		responseJSON(w, nil, http.StatusBadRequest)
+		httpx.ResponseJSON(w, nil, http.StatusBadRequest)
 		return
 	}
 
 	tok, err := s.business.Authenticate(r.Context(), pay.Username, pay.Password)
 	if err != nil {
-		responseErr(w, err, nil)
+		httpx.ResponseErr(w, err, nil)
 		return
 	}
 
-	responseJSON(w, authResponse{Token: tok}, http.StatusOK)
+	httpx.ResponseJSON(w, authResponse{Token: tok}, http.StatusOK)
 }

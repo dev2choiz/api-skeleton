@@ -10,6 +10,8 @@ import (
 
 	"github.com/dev2choiz/api-skeleton/pkg/business"
 	"github.com/dev2choiz/api-skeleton/pkg/contextapp"
+	"github.com/dev2choiz/api-skeleton/pkg/errapp"
+	"github.com/dev2choiz/api-skeleton/pkg/httpx"
 	"github.com/dev2choiz/api-skeleton/pkg/logger"
 )
 
@@ -58,7 +60,7 @@ func AuthenticateMiddleware(bu business.Business) func(http.Handler) http.Handle
 		return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 			user, err := bu.ValidateToken(r)
 			if err != nil {
-				w.WriteHeader(http.StatusUnauthorized)
+				httpx.ResponseErr(w, errapp.ErrAppUnauthorized, httpx.ErrResponse{Error: "unauthorized"})
 				return
 			}
 
