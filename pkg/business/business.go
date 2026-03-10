@@ -4,6 +4,8 @@ import (
 	"context"
 	"net/http"
 
+	"golang.org/x/sync/singleflight"
+
 	"github.com/dev2choiz/api-skeleton/entity"
 	"github.com/dev2choiz/api-skeleton/pkg/cache"
 	"github.com/dev2choiz/api-skeleton/pkg/repository"
@@ -21,8 +23,9 @@ type business struct {
 	repository repository.Repository
 	redis      cache.Cache
 	jwtSecret  string
+	sf         singleflight.Group
 }
 
-func NewBusiness(st repository.Repository, redis cache.Cache, jwtSecret string) Business {
-	return &business{st, redis, jwtSecret}
+func NewBusiness(rep repository.Repository, redis cache.Cache, jwtSecret string) Business {
+	return &business{repository: rep, redis: redis, jwtSecret: jwtSecret}
 }

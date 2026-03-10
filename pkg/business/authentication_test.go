@@ -3,10 +3,8 @@ package business
 import (
 	"context"
 	"errors"
-	"net/http"
 	"net/http/httptest"
 	"testing"
-	"time"
 
 	"github.com/golang-jwt/jwt/v5"
 	"github.com/stretchr/testify/assert"
@@ -150,54 +148,134 @@ func TestBusiness_Authenticate(t *testing.T) {
 			token, err := b.Authenticate(ctx, tt.username, tt.password)
 
 			if tt.wantErr {
-				if err == nil {
-					t.Fatal("expected error, got nil")
+				assert.Error(t, err)
+			} else {
+				assert.NoError(t, err)
+
+				if token == "" {
+					t.Fatal("expected JWT token, got empty string")
 				}
-				return
-			}
-
-			if err != nil {
-				t.Fatalf("unexpected error: %v", err)
-			}
-
-			if token == "" {
-				t.Fatal("expected JWT token, got empty string")
 			}
 		})
 	}
 }
 
 func TestBusiness_ValidateToken(t *testing.T) {
-	ctx := context.Background()
-	jwtSecret := "mysecret"
+	jwtSecret := "secret"
 
-	testUser := entity.User{
-		ID:       "123",
-		Username: "jaskier",
+	tok := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{})
+	tokWithoutID, err := tok.SignedString([]byte(jwtSecret))
+	assert.NoError(t, err)
+
+	tok = jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{"id": 123})
+	tokWithoutIntID, err := tok.SignedString([]byte(jwtSecret))
+	assert.NoError(t, err)
+
+	tok = jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{"id": "123"})
+	validTok, err := tok.SignedString([]byte(jwtSecret))
+	assert.NoError(t, err)
+
+	tests := []struct {
+		name       string
+		token      string
+		setupMocks func(t *testing.T) Business
+		wantErr    bool
+		wantUserID string
+	}{
+		{
+			name:       "empty token",
+			token:      "",
+			setupMocks: func(t *testing.T) Business { return NewBusiness(nil, nil, jwtSecret) },
+			wantErr:    true,
+		},
+		{
+			name:       "invalid token string",
+			token:      "invalidToken",
+			setupMocks: func(t *testing.T) Business { return NewBusiness(nil, nil, jwtSecret) },
+			wantErr:    true,
+		},
+		{
+			name:       "valid token but claims missing id",
+			token:      tokWithoutID,
+			setupMocks: func(t *testing.T) Business { return NewBusiness(nil, nil, jwtSecret) },
+			wantErr:    true,
+		},
+		{
+			name:       "valid token with and id, but the wrong type",
+			token:      tokWithoutIntID,
+			setupMocks: func(t *testing.T) Business { return NewBusiness(nil, nil, jwtSecret) },
+			wantErr:    true,
+		},
+		{
+			name:  "valid token + user in cache",
+			token: validTok,
+			setupMocks: func(t *testing.T) Business {
+				red := mockcache.NewMockCache(t)
+				red.EXPECT().GetString(mock.Anything, mock.Anything).Return(`{"id": "123"}`, nil)
+
+				return NewBusiness(nil, red, jwtSecret)
+			},
+			wantUserID: "123",
+		},
+		{
+			name:  "valid token + user not in cache + error with the repository",
+			token: validTok,
+			setupMocks: func(t *testing.T) Business {
+				red := mockcache.NewMockCache(t)
+				red.EXPECT().GetString(mock.Anything, mock.Anything).Return("", errors.New("not found"))
+
+				rep := mockrepository.NewMockRepository(t)
+				rep.EXPECT().GetUser(mock.Anything, "123").Return(entity.User{}, errors.New("some error"))
+
+				return NewBusiness(rep, red, jwtSecret)
+			},
+			wantErr: true,
+		},
+		{
+			name:  "valid token + user not in cache + no error with the repository",
+			token: validTok,
+			setupMocks: func(t *testing.T) Business {
+				red := mockcache.NewMockCache(t)
+				red.EXPECT().GetString(mock.Anything, mock.Anything).Return("", errors.New("not found"))
+				red.EXPECT().SetJSON(mock.Anything, mock.Anything, mock.Anything, mock.Anything).Return(errors.New("some error"))
+
+				rep := mockrepository.NewMockRepository(t)
+				rep.EXPECT().GetUser(mock.Anything, "123").Return(entity.User{ID: "123"}, nil)
+
+				return NewBusiness(rep, red, jwtSecret)
+			},
+			wantErr:    false,
+			wantUserID: "123",
+		},
+		{
+			name:  "valid token + user not in cache the first check + but in the cache at the second check",
+			token: validTok,
+			setupMocks: func(t *testing.T) Business {
+				red := mockcache.NewMockCache(t)
+				red.EXPECT().GetString(mock.Anything, mock.Anything).Return("", errors.New("not found")).Once()
+				red.EXPECT().GetString(mock.Anything, mock.Anything).Return(`{"id": "123"}`, nil).Once()
+
+				rep := mockrepository.NewMockRepository(t)
+
+				return NewBusiness(rep, red, jwtSecret)
+			},
+			wantUserID: "123",
+		},
 	}
 
-	token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
-		"id":       testUser.ID,
-		"username": testUser.Username,
-		"exp":      time.Now().Add(time.Hour).Unix(),
-	})
-	tokenString, err := token.SignedString([]byte(jwtSecret))
-	assert.NoError(t, err)
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			b := tt.setupMocks(t)
 
-	req := httptest.NewRequest(http.MethodGet, "/", nil)
-	req.Header.Set("Authorization", "Bearer "+tokenString)
+			req := httptest.NewRequest("GET", "/", nil)
+			req.Header.Set("Authorization", "Bearer "+tt.token)
 
-	st := mockrepository.NewMockRepository(t)
-	ca := mockcache.NewMockCache(t)
-	ca.EXPECT().
-		GetString(ctx, "validate_token_"+testUser.ID).
-		Return(`{"id": "123", "username": "jaskier"}`, nil)
-
-	b := NewBusiness(st, ca, jwtSecret)
-
-	got, err := b.ValidateToken(req)
-	assert.NoError(t, err)
-
-	assert.Equal(t, got.ID, testUser.ID)
-	assert.Equal(t, got.Username, testUser.Username)
+			user, err := b.ValidateToken(req)
+			if tt.wantErr {
+				assert.Error(t, err)
+			} else {
+				assert.Equal(t, user.ID, tt.wantUserID)
+			}
+		})
+	}
 }
