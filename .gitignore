@@ -4,3 +4,5 @@ logs
 .idea
 .vscode
 .nvim
+
+coverage.out

@@ -24,15 +24,18 @@ db-wait:
 api-run:
 	docker compose exec api go run main.go
 
-api-debug:
-	docker compose exec api dlv --listen=:2345 --headless=true --api-version=2 --accept-multiclient debug main.go
-
 kill-delve:
 	docker compose exec api pkill -9 -f dlv 2>/dev/null || true
 	rm -f __debug_bin*
 
+api-debug: kill-delve
+	docker compose exec api dlv --listen=:2345 --headless=true --api-version=2 --accept-multiclient debug main.go
+
 logs-api:
 	docker compose logs -f api
 
-tests:
-	go test ./...
+test:
+	go test ./... -count=1
+
+mockery:
+	mockery

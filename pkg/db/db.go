@@ -84,5 +84,5 @@ func WrapDBErr(action string, err error) error {
 		return errapp.WrapNotFound(err, action)
 	}
 
-	return err
+	return errapp.WrapInternal(err, action)
 }

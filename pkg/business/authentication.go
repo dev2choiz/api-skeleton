@@ -20,7 +20,7 @@ import (
 
 var (
 	bcryptCost         = bcrypt.DefaultCost
-	tokenJWTExpiration = 24000 * time.Hour // todo: to adjust
+	tokenJWTExpiration = 24000 * time.Hour // TODO: to adjust
 	cacheTTL           = 60 * time.Minute
 )
 
