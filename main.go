@@ -6,6 +6,7 @@ import (
 	"net/http"
 
 	"github.com/go-chi/chi/v5"
+	chimiddleware "github.com/go-chi/chi/v5/middleware"
 	"go.uber.org/zap"
 
 	"github.com/dev2choiz/api-skeleton/internal/config"
@@ -18,6 +19,8 @@ import (
 	"github.com/dev2choiz/api-skeleton/pkg/logger"
 	"github.com/dev2choiz/api-skeleton/pkg/repository"
 	"github.com/dev2choiz/api-skeleton/server"
+
+	_ "net/http/pprof"
 )
 
 func main() {
@@ -58,9 +61,21 @@ func main() {
 	public.Use(middleware.LogMiddleware())
 	server.ApplyRoutes(ser, public, secure)
 
-	port := fmt.Sprintf(":%s", conf.APIPort)
-	logger.Sugar().Infof("Listen %s", port)
-	if err := http.ListenAndServe(port, route); err != nil {
-		logger.Fatal("failed to server app", zap.String("port", port), zap.Error(err))
+	go func() {
+		pprofRouter := chi.NewRouter()
+		pprofRouter.Mount("/debug", chimiddleware.Profiler())
+
+		addr := fmt.Sprintf(":%s", conf.PPROFPort)
+		logger.Sugar().Infof("Pprof listen %s", addr)
+
+		if err := http.ListenAndServe(addr, pprofRouter); err != nil {
+			logger.Error("pprof", zap.String("port", addr), zap.Error(err))
+		}
+	}()
+
+	addr := fmt.Sprintf(":%s", conf.APIPort)
+	logger.Sugar().Infof("Listen %s", addr)
+	if err := http.ListenAndServe(addr, route); err != nil {
+		logger.Fatal("failed to server app", zap.String("port", addr), zap.Error(err))
 	}
 }

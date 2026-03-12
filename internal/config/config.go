@@ -7,6 +7,7 @@ import (
 // Config represents application environment configuration loaded from environment variables.
 type Config struct {
 	APIPort          string `env:"API_PORT,required"`
+	PPROFPort        string `env:"PPROF_PORT,required"`
 	JWTSecret        string `env:"JWT_SECRET,required"`
 	PostgresUser     string `env:"POSTGRES_USER,required"`
 	PostgresPassword string `env:"POSTGRES_PASSWORD,required"`
