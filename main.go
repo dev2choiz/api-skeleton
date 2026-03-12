@@ -46,7 +46,7 @@ func main() {
 
 	repo := repository.New(db)
 	bu := business.NewBusiness(repo, re, conf.JWTSecret)
-	ser := server.NewServer(bu)
+	ser := server.New(bu)
 
 	route := chi.NewRouter()
 	route.Use(middleware.CorrelationIDMiddleware(), middleware.RecoverMiddleware())

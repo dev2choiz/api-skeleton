@@ -22,7 +22,7 @@ db-wait:
 	docker compose exec api go run ./cmd/ database wait --timeout 15s
 
 api-run:
-	docker compose exec api go run main.go
+	docker compose exec api go run .
 
 kill-delve:
 	docker compose exec api pkill -9 -f dlv 2>/dev/null || true
@@ -35,7 +35,10 @@ logs-api:
 	docker compose logs -f api
 
 test:
-	go test ./... -count=1
+	docker compose down postgres_test
+	docker compose up --build -d postgres_test
+	sleep 2.7 # TODO: command to wait for the database test
+	go test ./... -count=1 -race
 
 mockery:
 	mockery

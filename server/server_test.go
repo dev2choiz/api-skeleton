@@ -21,7 +21,7 @@ func getRequestBody(t *testing.T, data any) io.Reader {
 }
 
 func TestServer_Index(t *testing.T) {
-	s := NewServer(mockbusiness.NewMockBusiness(t))
+	s := New(mockbusiness.NewMockBusiness(t))
 	req, err := http.NewRequest("GET", "/", nil)
 	assert.NoError(t, err)
 

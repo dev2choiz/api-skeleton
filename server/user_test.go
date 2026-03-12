@@ -76,7 +76,7 @@ func TestServer_GetUsers(t *testing.T) {
 			bus.EXPECT().GetUsers(context.Background(), mock.Anything).
 				Return(tt.want, tt.busErr)
 
-			srv := NewServer(bus)
+			srv := New(bus)
 
 			req, err := http.NewRequest("GET", "/users", nil)
 			assert.NoError(t, err)

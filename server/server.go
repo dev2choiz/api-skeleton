@@ -13,7 +13,7 @@ type Server struct {
 	business business.Business
 }
 
-func NewServer(b business.Business) *Server {
+func New(b business.Business) *Server {
 	return &Server{b}
 }
 

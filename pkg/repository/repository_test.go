@@ -37,6 +37,7 @@ func resetDB(t *testing.T) {
 
 func Test_repository_scanOne(t *testing.T) {
 	ctx := context.Background()
+	resetDB(t)
 
 	tests := []struct {
 		name       string
@@ -48,7 +49,7 @@ func Test_repository_scanOne(t *testing.T) {
 			name: "Error in the query",
 			setupQuery: func() *bun.SelectQuery {
 				q := dbTest.NewSelect().Model(&entity.User{})
-				applyUserFilters(q, entity.UserFilters{ID: new("doesnotexist")})
+				applyUserFilters(q, entity.UserFilters{ID: new("invaliduuid")})
 				return q
 			},
 			want:    entity.User{},

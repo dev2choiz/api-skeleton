@@ -73,7 +73,7 @@ func TestServer_Register(t *testing.T) {
 		t.Run(tt.name, func(t *testing.T) {
 			bus := tt.busMock(t)
 
-			srv := NewServer(bus)
+			srv := New(bus)
 
 			req, err := http.NewRequest("POST", "/register", tt.reqBody)
 			assert.NoError(t, err)
@@ -149,7 +149,7 @@ func TestServer_Aunthenticate(t *testing.T) {
 		t.Run(tt.name, func(t *testing.T) {
 			bus := tt.busMock(t)
 
-			srv := NewServer(bus)
+			srv := New(bus)
 
 			req, err := http.NewRequest("POST", "/register", tt.reqBody)
 			assert.NoError(t, err)
