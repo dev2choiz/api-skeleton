@@ -4,7 +4,7 @@ up:
 down:
 	docker compose down --remove-orphans
 
-start: down up db-wait db-init db-migrate db-fixtures api-run
+start: down up db-wait db-init db-migrate db-fixtures api-watch
 
 api-sh:
 	docker compose exec api bash
@@ -21,8 +21,8 @@ db-fixtures:
 db-wait:
 	docker compose exec api go run ./cmd/ database wait --timeout 15s
 
-api-run:
-	docker compose exec api go run .
+api-watch:
+	docker compose exec api air
 
 kill-delve:
 	docker compose exec api pkill -9 -f dlv 2>/dev/null || true
