@@ -31,16 +31,16 @@ func New(host, user, password, database string, port int, tls *tls.Config) (*bun
 }
 
 func NewTest() (*bun.DB, error) {
-	port, err := env.GetInt("POSTGRES_PORT_TEST", 9433)
+	port, err := env.GetInt("POSTGRES_PORT", 9433)
 	if err != nil {
 		return nil, err
 	}
 
 	return New(
-		env.GetString("POSTGRES_HOST_TEST", "localhost"),
-		env.GetString("POSTGRES_USER_TEST", "test"),
-		env.GetString("POSTGRES_PASSWORD_TEST", "test"),
-		env.GetString("POSTGRES_DATABASE_TEST", "test"),
+		env.GetString("POSTGRES_HOST", "localhost"),
+		env.GetString("POSTGRES_USER", "test"),
+		env.GetString("POSTGRES_PASSWORD", "test"),
+		env.GetString("POSTGRES_DATABASE", "test"),
 		port,
 		nil,
 	)

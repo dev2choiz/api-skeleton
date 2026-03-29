@@ -30,6 +30,19 @@ services:
     ports:
       - "9379:6379"
 
+  # Test environment
+  api_test:
+    build:
+      context: .
+      dockerfile: docker/api.Dockerfile
+    volumes:
+      - .:/app
+      - go-mod-cache:/go/pkg/mod
+    env_file:
+      - .env.test
+    depends_on:
+      - postgres_test
+
   postgres_test:
     image: postgres:18
     ports:

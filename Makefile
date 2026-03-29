@@ -27,6 +27,10 @@ db-fixtures: ## Load database fixtures
 db-wait: ## wait database to be ready
 	docker compose exec api go run ./cmd/ database wait --timeout 15s
 
+db-wait-test: ## wait database test to be ready
+	docker compose exec api_test go run ./cmd/ database wait --timeout 15s
+
+
 ##@ API
 api-watch: ## Run API in live-reload mode
 	docker compose exec api air
@@ -41,12 +45,10 @@ api-debug: kill-delve ## Run API in debug mode
 logs-api: ## Follow API logs
 	docker compose logs -f api
 
+
 ##@ Utils
-test: ## Run tests with isolated test database
-	docker compose down postgres_test
-	docker compose up --build -d postgres_test
-	sleep 2.7 # TODO: command to wait for the database test
-	go test ./... -count=1 -race
+test: db-wait-test ## Run tests inside Docker
+	docker compose exec api_test go test ./... -count=1 -race
 
 mockery: ## Generate mocks
 	mockery
